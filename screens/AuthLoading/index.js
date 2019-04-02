@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
-import { Text, AsyncStorage, View } from 'react-native';
+import {
+  Text,
+  AsyncStorage,
+  View,
+  ActivityIndicator,
+  StyleSheet
+} from 'react-native';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  }
+});
 export default class AuthLoadingScreen extends Component {
   constructor(props) {
     super(props);
@@ -15,8 +27,8 @@ export default class AuthLoadingScreen extends Component {
   };
   render() {
     return (
-      <View>
-        <Text> AuthLoadingScreen!!! </Text>
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
