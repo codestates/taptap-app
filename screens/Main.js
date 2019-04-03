@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Map, List } from 'immutable';
 import utils from '../utils';
 import Stores from '../components/Stores';
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 export default class Main extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       selectedStore: Map({
         id: -1,
@@ -24,52 +25,107 @@ export default class Main extends Component {
       }),
       visitedStores: List([])
     };
+
+    this._init();
+  }
+  _init = async () => {
     const { id } = this.props.navigation.state.params;
     const customerID = id;
+    const visitedStores = await utils.fetchPostData(
+      '/apps/coupons/get-visited-stores',
+      {
+        customerID: customerID
+      }
+    );
 
-    (async () => {
-      const visitedStores = await utils.fetchPostData(
-        '/apps/coupons/get-visited-stores',
-        {
-          customerID: customerID
-        }
-      );
+    const { selectedStore } = this.state;
+    //처음 등록한 사람 처리 : visitedStores가 비어있음
+    const lastVisitedStore = visitedStores.shift();
+    let state = selectedStore.set('id', lastVisitedStore.storeID);
+    state = state.set('storeName', lastVisitedStore.name);
+    visitedStores.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+    this.setState({
+      visitedStores: List(visitedStores)
+    });
 
-      const { selectedStore } = this.state;
-      //처음 등록한 사람 처리 : visitedStores가 비어있음
-      const lastVisitedStore = visitedStores.shift();
-      let state = selectedStore.set('id', lastVisitedStore.storeID);
-      state = state.set('storeName', lastVisitedStore.name);
+    const couponCount = await utils.fetchPostData(
+      '/apps/coupons/get-coupons-count',
+      {
+        customerID: customerID,
+        storeID: lastVisitedStore.storeID
+      }
+    );
+    const json = await utils.fetchPostData('/apps/rewards/get-required-count', {
+      storeID: lastVisitedStore.storeID
+    });
+    state = state
+      .set('count', couponCount.count)
+      .set('required', json.required);
+    this.setState({
+      selectedStore: state
+    });
+  };
 
-      this.setState({
-        visitedStores: List(visitedStores)
-      });
+  _fetchGetCouponsAndStoresList = async storeID => {
+    const { id } = this.props.navigation.state.params;
+    const customerID = id;
+    const visitedStores = await utils.fetchPostData(
+      '/apps/coupons/get-visited-stores',
+      {
+        customerID: customerID
+      }
+    );
+    const { selectedStore } = this.state;
+    let selectedIndex = 0;
+    visitedStores.forEach((val, idx) => {
+      if (val.storeID === storeID) {
+        selectedIndex = idx;
+      }
+    });
 
-      const couponCount = await utils.fetchPostData(
-        '/apps/coupons/get-coupons-count',
-        {
-          customerID: customerID,
-          storeID: lastVisitedStore.storeID
-        }
-      );
-      const json = await utils.fetchPostData(
-        '/apps/rewards/get-required-count',
-        {
-          storeID: lastVisitedStore.storeID
-        }
-      );
-      state = state
-        .set('count', couponCount.count)
-        .set('required', json.required);
-      this.setState({
-        selectedStore: state
-      });
-    })();
-  }
+    const selectedvisitedStore = visitedStores.splice(selectedIndex, 1)[0];
+
+    visitedStores.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+    this.setState({
+      visitedStores: List(visitedStores)
+    });
+
+    let state = selectedStore.set('id', selectedvisitedStore.storeID);
+    state = state.set('storeName', selectedvisitedStore.name);
+
+    const couponCount = await utils.fetchPostData(
+      '/apps/coupons/get-coupons-count',
+      {
+        customerID: customerID,
+        storeID: storeID
+      }
+    );
+
+    const json = await utils.fetchPostData('/apps/rewards/get-required-count', {
+      storeID: storeID
+    });
+
+    state = state
+      .set('count', couponCount.count)
+      .set('required', json.required);
+
+    this.setState({
+      selectedStore: state
+    });
+  };
+
+  _handleOnPressStoreName = storeID => {
+    this._fetchGetCouponsAndStoresList(storeID);
+  };
 
   render() {
     const { selectedStore, visitedStores } = this.state;
     const { id } = this.props.navigation.state.params;
+    const { _handleOnPressStoreName } = this;
     return (
       <View style={styles.container}>
         <Coupons
@@ -77,7 +133,11 @@ export default class Main extends Component {
           selectedStore={selectedStore}
           customerID={id}
         />
-        <Stores style={styles.stores} visitedStores={visitedStores} />
+        <Stores
+          style={styles.stores}
+          visitedStores={visitedStores}
+          onPress={_handleOnPressStoreName}
+        />
       </View>
     );
   }
