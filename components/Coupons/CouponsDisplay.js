@@ -8,37 +8,32 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: '#F2F2F2',
     justifyContent: 'center',
+    alignSelf: 'center',
     height: 180,
-    width: '90%',
+    width: '100%',
     paddingTop: 20
   }
 });
 export default class CouponsDisplay extends Component {
+  _getImageSize = required => {
+    let size = 600 / required - 2 < 50 ? 50 : 600 / required - 2;
+    if (size > 70) {
+      size = 70;
+    }
+    return size;
+  };
   render() {
+    const { _getImageSize } = this;
     const { count, required } = this.props;
     const coupons = [];
+    const size = _getImageSize(required);
+
     for (let i = 0; i < count; i++) {
-      coupons.push(
-        // <Image
-        //   key={`checked${i}`}
-        //   style={{ width: 70, height: 70 }}
-        //   source={{
-        //     uri: 'https://img.icons8.com/ios/100/000000/warranty-filled.png'
-        //   }}
-        // />
-        <AntDesign key={`checked${i}`} name={'star'} size={70} />
-      );
+      coupons.push(<AntDesign key={`checked${i}`} name={'star'} size={size} />);
     }
     for (let i = 0; i < required - count; i++) {
       coupons.push(
-        // <Image
-        //   key={`unchecked${i}`}
-        //   style={{ width: 70, height: 70 }}
-        //   source={{
-        //     uri: 'https://img.icons8.com/ios/100/000000/warranty.png'
-        //   }}
-        // />
-        <AntDesign key={`unchecked${i}`} name={'staro'} size={70} />
+        <AntDesign key={`unchecked${i}`} name={'staro'} size={size} />
       );
     }
     return (
