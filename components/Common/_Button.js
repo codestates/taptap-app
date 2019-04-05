@@ -23,9 +23,11 @@ export default class _Button extends Component {
         <TouchableHighlight
           style={styles.registerBtn}
           onPress={onPress}
-          underlayColor={'#FDC20E'}
+          underlayColor={'#FDD758'}
         >
-          <Text>{title}</Text>
+          <Text style={{ fontSize: 30, fontFamily: 'Gamja-Flower-Regular' }}>
+            {title}
+          </Text>
         </TouchableHighlight>
       </View>
     );

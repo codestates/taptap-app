@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   couponsContainer: {
@@ -12,6 +11,10 @@ const styles = StyleSheet.create({
     height: 180,
     width: '100%',
     paddingTop: 20
+  },
+  couponImg: {
+    width: 70,
+    height: 70
   }
 });
 export default class CouponsDisplay extends Component {
@@ -28,13 +31,25 @@ export default class CouponsDisplay extends Component {
     const coupons = [];
     const size = _getImageSize(required);
 
-    for (let i = 0; i < count; i++) {
-      coupons.push(<AntDesign key={`checked${i}`} name={'star'} size={size} />);
-    }
-    for (let i = 0; i < required - count; i++) {
-      coupons.push(
-        <AntDesign key={`unchecked${i}`} name={'staro'} size={size} />
-      );
+    if (size !== null) {
+      for (let i = 0; i < count; i++) {
+        coupons.push(
+          <Image
+            style={styles.couponImg}
+            key={`checked${i}`}
+            source={require('../../assets/checked.png')}
+          />
+        );
+      }
+      for (let i = 0; i < required - count; i++) {
+        coupons.push(
+          <Image
+            style={styles.couponImg}
+            key={`unchecked${i}`}
+            source={require('../../assets/unchecked.png')}
+          />
+        );
+      }
     }
     return (
       <View style={styles.couponsContainer}>{coupons.map(img => img)}</View>

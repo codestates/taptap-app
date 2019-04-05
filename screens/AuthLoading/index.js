@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-  Text,
   AsyncStorage,
   View,
+  Image,
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
@@ -10,7 +10,9 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FDC20E'
   }
 });
 export default class AuthLoadingScreen extends Component {
@@ -18,16 +20,22 @@ export default class AuthLoadingScreen extends Component {
     super(props);
     setTimeout(() => {
       this._bootstrapAsync();
-    }, 1000);
+    }, 3000);
   }
   _bootstrapAsync = async () => {
-    // const userToken = await AsyncStorage.getItem('userToken');
-    // this.props.navigation.navigate(userToken ? 'MainTab' : 'Auth');
+    const userToken = await AsyncStorage.getItem('userToken');
+    console.log(
+      'TCL: AuthLoadingScreen -> _bootstrapAsync -> userToken',
+      userToken
+    );
+
+    this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
     this.props.navigation.navigate('Auth');
   };
   render() {
     return (
       <View style={styles.container}>
+        <Image source={require('../../assets/Loding.gif')} />
         <ActivityIndicator size="large" />
       </View>
     );

@@ -5,14 +5,13 @@ const styles = StyleSheet.create({
   storeItemContainer: {
     width: '100%',
     borderBottomColor: 'white',
-    borderBottomWidth: 1,
-    marginLeft: 20,
-    marginRight: 20
+    borderBottomWidth: 1
   },
   button: {
     alignItems: 'center',
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    backgroundColor: '#FDC20E'
   }
 });
 export default class StoreItem extends Component {
@@ -23,11 +22,12 @@ export default class StoreItem extends Component {
         <TouchableHighlight
           style={styles.button}
           onPress={() => onPress(id)}
-          underlayColor={'#FDC20E'}
+          underlayColor={'#FDD758'}
         >
           <Text
             style={{
-              fontSize: 30
+              fontSize: 30,
+              fontFamily: 'Gamja-Flower-Regular'
             }}
           >
             {name}
