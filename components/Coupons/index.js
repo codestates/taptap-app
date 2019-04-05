@@ -6,18 +6,21 @@ import Swiper from 'react-native-swiper';
 
 const styles = StyleSheet.create({
   couponsView: {
-    flex: 1,
+    flex: 0.9,
     justifyContent: 'flex-start',
     // alignItems: 'center',
-    marginTop: 50
+    marginTop: 100
   },
   storeName: {
     fontSize: 40,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Gamja-Flower-Regular'
   },
   couponsInfo: {
     textAlign: 'right',
-    marginRight: 20
+    marginRight: 20,
+    fontSize: 22,
+    fontFamily: 'Gamja-Flower-Regular'
   }
 });
 
@@ -64,12 +67,43 @@ export default class Coupons extends Component {
       <View style={styles.couponsView}>
         <Text style={styles.storeName}>{selectedStore.get('storeName')}</Text>
         <Text style={styles.couponsInfo}>
-          <Text style={{ color: 'orange', fontWeight: 'bold', fontSize: 20 }}>
-            {selectedStore.get('count')}
+          <Text style={{ color: '#E34235', fontWeight: 'bold', fontSize: 30 }}>
+            {selectedStore.get('count') + ' '}
           </Text>
-          /{selectedStore.get('required')}
+          / {selectedStore.get('required')}
         </Text>
-        <Swiper>{pages}</Swiper>
+        <Swiper
+          dot={
+            <View
+              style={{
+                backgroundColor: 'rgba(0,0,0,.2)',
+                width: 5,
+                height: 5,
+                borderRadius: 4,
+                marginLeft: 3,
+                marginRight: 3,
+                marginTop: 3,
+                marginBottom: 3
+              }}
+            />
+          }
+          activeDot={
+            <View
+              style={{
+                backgroundColor: 'black',
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                marginLeft: 3,
+                marginRight: 3,
+                marginTop: 3,
+                marginBottom: 3
+              }}
+            />
+          }
+        >
+          {pages}
+        </Swiper>
       </View>
     );
   }

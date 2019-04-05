@@ -4,15 +4,14 @@ import { Map, List } from 'immutable';
 import utils from '../utils';
 import Stores from '../components/Stores';
 import Coupons from '../components/Coupons';
+import NoCoupon from '../screens/NoCoupon';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  noCouponContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+  storeListContainer: {
+    flex: 1
   }
 });
 
@@ -30,9 +29,11 @@ export default class Main extends Component {
       visitedStores: List([]),
       isNewMember: false
     };
-
+  }
+  componentWillMount() {
     this._init();
   }
+
   _init = async () => {
     const { id } = this.props.navigation.state.params;
     const customerID = id;
@@ -142,9 +143,7 @@ export default class Main extends Component {
     return (
       <View style={styles.container}>
         {isNewMember ? (
-          <View style={styles.noCouponContainer}>
-            <Text style={{ fontSize: 50 }}>쿠폰이 없습니다.</Text>
-          </View>
+          <NoCoupon />
         ) : (
           <View style={styles.container}>
             <Coupons
@@ -152,11 +151,13 @@ export default class Main extends Component {
               selectedStore={selectedStore}
               customerID={id}
             />
-            <Stores
-              style={styles.stores}
-              visitedStores={visitedStores}
-              onPress={_handleOnPressStoreName}
-            />
+            <View style={styles.storeListContainer}>
+              <Stores
+                style={styles.stores}
+                visitedStores={visitedStores}
+                onPress={_handleOnPressStoreName}
+              />
+            </View>
           </View>
         )}
       </View>

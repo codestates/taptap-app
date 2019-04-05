@@ -7,12 +7,14 @@ import utils from '../../utils';
 const styles = StyleSheet.create({
   authContainer: {
     flex: 1,
-    backgroundColor: '#F7F7F7'
+    backgroundColor: '#F7F7F7',
+    marginTop: 20
   },
   imageView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 50
   },
   resistereView: {
     flex: 1,
@@ -24,7 +26,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     textAlign: 'center',
     width: '90%',
-    marginBottom: 20
+    marginBottom: 10,
+    fontSize: 25,
+    fontFamily: 'Gamja-Flower-Regular'
   },
   title: {
     fontFamily: 'Gamja-Flower-Regular',
@@ -56,7 +60,6 @@ export default class Auth extends Component {
   };
 
   _pressResisterBtn = () => {
-    // AsyncStorage.setItem('userToken', 'add_token');
     const { phoneNumber } = this.state;
 
     if (phoneNumber.length === 13) {
@@ -70,6 +73,7 @@ export default class Auth extends Component {
             //등록완료
             //메인 화면으로
             this.props.navigation.navigate('Main', json[0]);
+            AsyncStorage.setItem('userToken', json[0].id);
           } else {
             //이미 존재
             this.props.navigation.navigate('Main', json[0]);
@@ -101,7 +105,7 @@ export default class Auth extends Component {
             maxLength={13}
             value={phoneNumber}
           />
-          <_Button onPress={_pressResisterBtn} title={'등록하기'} />
+          <_Button onPress={_pressResisterBtn} title={'눌러주세요!'} />
         </View>
       </View>
     );
