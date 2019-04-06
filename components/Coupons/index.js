@@ -1,30 +1,49 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, Image, View, StyleSheet } from 'react-native';
 import CouponsDisplay from './CouponsDisplay';
 
 import Swiper from 'react-native-swiper';
+import SpinnerButton from 'react-native-spinner-button';
 
 const styles = StyleSheet.create({
   couponsView: {
     flex: 0.9,
     justifyContent: 'flex-start',
     // alignItems: 'center',
-    marginTop: 100
+    marginTop: 80
   },
   storeName: {
     fontSize: 40,
+    width: '100%',
     textAlign: 'center',
     fontFamily: 'Gamja-Flower-Regular'
   },
   couponsInfo: {
     textAlign: 'right',
-    marginRight: 20,
+    marginRight: 30,
+    marginTop: 20,
     fontSize: 22,
     fontFamily: 'Gamja-Flower-Regular'
+  },
+  buttonStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
+    backgroundColor: '#F2F2F2',
+    paddingTop: 25,
+    paddingBottom: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 20,
+    marginLeft: 45,
+    marginRight: 45
   }
 });
 
 export default class Coupons extends Component {
+  state = {
+    defaultLoading: false
+  };
   _getCouponPages = (count, required) => {
     if (count <= required) {
       return [
@@ -56,18 +75,65 @@ export default class Coupons extends Component {
       return pages;
     }
   };
+  _onPressStoreName = () => {
+    this.setState({
+      defaultLoading: true
+    });
+  };
   render() {
-    const { _getCouponPages } = this;
-    const { selectedStore } = this.props;
+    const { _getCouponPages, _onPressStoreName } = this;
+    const { defaultLoading } = this.state;
+    const { selectedStore, onPress } = this.props;
     const pages = _getCouponPages(
       selectedStore.get('count'),
       selectedStore.get('required')
     );
     return (
       <View style={styles.couponsView}>
-        <Text style={styles.storeName}>{selectedStore.get('storeName')}</Text>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <SpinnerButton
+            spinnerType={'UIActivityIndicator'}
+            buttonStyle={styles.buttonStyle}
+            isLoading={defaultLoading}
+            onPress={() => {
+              this.setState({
+                defaultLoading: true
+              });
+              onPress(selectedStore.get('id'));
+              // fetch와 동기화 필요한 부분 ======================
+              setTimeout(() => {
+                this.setState({
+                  defaultLoading: false
+                });
+              }, 1000);
+            }}
+            indicatorCount={10}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingLeft: 20,
+                paddingRight: 20
+              }}
+            >
+              <Text style={styles.storeName}>
+                {selectedStore.get('storeName')}
+              </Text>
+              <Image
+                style={{ width: 40, height: 40 }}
+                source={require('../../assets/refresh.png')}
+              />
+            </View>
+          </SpinnerButton>
+        </View>
         <Text style={styles.couponsInfo}>
-          <Text style={{ color: '#E34235', fontWeight: 'bold', fontSize: 30 }}>
+          <Text style={{ color: '#E34235', fontWeight: 'bold', fontSize: 40 }}>
             {selectedStore.get('count') + ' '}
           </Text>
           / {selectedStore.get('required')}

@@ -1,10 +1,4 @@
-import {
-  createSwitchNavigator,
-  createBottomTabNavigator,
-  createMaterialTopTabNavigator,
-  createStackNavigator,
-  createAppContainer
-} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
 import AuthLoading from './AuthLoading';
 import Auth from './Auth';

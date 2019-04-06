@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
   registerContainer: {
     width: '90%',
     alignItems: 'center',
-    backgroundColor: '#FDC20E'
+    backgroundColor: '#FDC20E',
+    borderRadius: 5
   },
   registerBtn: {
     width: '100%',
@@ -14,7 +15,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   }
 });
-
 export default class _Button extends Component {
   render() {
     const { onPress, title } = this.props;

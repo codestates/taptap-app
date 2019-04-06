@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "taptap-app",
+    "name": "꾹꾹이",
     "slug": "taptap-app",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -19,6 +19,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.codestates.taptap"
     }
   }
 }

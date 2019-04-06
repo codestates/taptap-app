@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Image, StyleSheet } from 'react-native';
+import {
+  Text,
+  TextInput,
+  View,
+  Image,
+  AsyncStorage,
+  StyleSheet
+} from 'react-native';
 import { Font } from 'expo';
 import _Button from '../../components/Common/_Button';
 import utils from '../../utils';
