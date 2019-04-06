@@ -8,7 +8,8 @@ import NoCoupon from '../screens/NoCoupon';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#FDD758'
   },
   storeListContainer: {
     flex: 1
@@ -22,9 +23,9 @@ export default class Main extends Component {
     this.state = {
       selectedStore: Map({
         id: -1,
-        storeName: '',
-        count: -1,
-        required: -1
+        storeName: '로딩 중',
+        count: 0,
+        required: 10
       }),
       visitedStores: List([]),
       isNewMember: false
@@ -150,10 +151,10 @@ export default class Main extends Component {
               style={styles.coupon}
               selectedStore={selectedStore}
               customerID={id}
+              onPress={_handleOnPressStoreName}
             />
             <View style={styles.storeListContainer}>
               <Stores
-                style={styles.stores}
                 visitedStores={visitedStores}
                 onPress={_handleOnPressStoreName}
               />

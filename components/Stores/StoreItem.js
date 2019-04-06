@@ -4,14 +4,16 @@ import { TouchableHighlight, Text, View, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   storeItemContainer: {
     width: '100%',
-    borderBottomColor: 'white',
-    borderBottomWidth: 1
+    borderRadius: 10
   },
   button: {
     alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: '#FDC20E'
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: '#F2F2F2',
+    borderRadius: 10,
+    borderBottomColor: '#bbbbbb',
+    borderBottomWidth: 1
   }
 });
 export default class StoreItem extends Component {
@@ -22,11 +24,11 @@ export default class StoreItem extends Component {
         <TouchableHighlight
           style={styles.button}
           onPress={() => onPress(id)}
-          underlayColor={'#FDD758'}
+          underlayColor={'#FDC20E'}
         >
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 35,
               fontFamily: 'Gamja-Flower-Regular'
             }}
           >

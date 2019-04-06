@@ -9,47 +9,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     height: 180,
-    width: '100%',
-    paddingTop: 20
-  },
-  couponImg: {
-    width: 70,
-    height: 70
+    width: '90%',
+    paddingTop: 20,
+    borderRadius: 10
   }
 });
 export default class CouponsDisplay extends Component {
-  _getImageSize = required => {
-    let size = 600 / required - 2 < 50 ? 50 : 600 / required - 2;
-    if (size > 70) {
-      size = 70;
-    }
-    return size;
-  };
   render() {
-    const { _getImageSize } = this;
     const { count, required } = this.props;
     const coupons = [];
-    const size = _getImageSize(required);
 
-    if (size !== null) {
-      for (let i = 0; i < count; i++) {
-        coupons.push(
-          <Image
-            style={styles.couponImg}
-            key={`checked${i}`}
-            source={require('../../assets/checked.png')}
-          />
-        );
-      }
-      for (let i = 0; i < required - count; i++) {
-        coupons.push(
-          <Image
-            style={styles.couponImg}
-            key={`unchecked${i}`}
-            source={require('../../assets/unchecked.png')}
-          />
-        );
-      }
+    for (let i = 0; i < count; i++) {
+      coupons.push(
+        <Image
+          style={{ width: 70, height: 70 }}
+          key={`checked${i}`}
+          source={require('../../assets/checked.png')}
+        />
+      );
+    }
+    for (let i = 0; i < required - count; i++) {
+      coupons.push(
+        <Image
+          style={{ width: 70, height: 70 }}
+          key={`unchecked${i}`}
+          source={require('../../assets/unchecked.png')}
+        />
+      );
     }
     return (
       <View style={styles.couponsContainer}>{coupons.map(img => img)}</View>
